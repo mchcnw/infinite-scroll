@@ -1,19 +1,15 @@
 import React,{ useEffect, useMemo, useRef } from 'react';
 import BookItem from './BookItem';
-import { useBooksList } from '../Hooks/useApi';
+import { useBooksList } from '../Hooks/useBookList';
 
 const Booklist = () => {
-    const {books, loading, error, next, prev, listBooks} = useBooksList();
+    const {books, loading, error, next,listBooks} = useBooksList();
     const bookListRef = useRef();
-    const handleScroll = (e) => {
-        const isAtTop = bookListRef?.current?.scrollTop === 0;
+    const handleScroll = () => {
         const isAtBottom = bookListRef?.current?.scrollHeight - bookListRef?.current?.scrollTop === bookListRef?.current?.clientHeight;
-
         if(isAtBottom) {
             listBooks(next);
-        } else if (isAtTop) {
-            listBooks(prev);
-        }
+        } 
     }
 
     useEffect(() => {

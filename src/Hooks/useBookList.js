@@ -1,7 +1,7 @@
 import { useState , useCallback} from "react"
 
 export const useBooksList = () => {
-    const [books, setBooks] = useState(null);
+    const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [next, setNext] = useState(null);
@@ -18,7 +18,7 @@ export const useBooksList = () => {
                 setError(`Response failed ${response.status}`)
             } else {
                 const data = await response.json();
-                setBooks(data?.results);
+                setBooks((currentBooks) => [...currentBooks, ...data?.results]);
                 setCount(data.count);
                 setPrev(data?.previous);
                 setNext(data?.next);
