@@ -30,7 +30,7 @@ const Booklist = () => {
 
     const renderBookItems = useMemo(() => {
         return books?.map((book) => (
-            <BookItem onItemSelected={handleItemChecked} key={book.id} book={book} />
+            <BookItem onItemSelected={handleItemChecked} key={`${book.id}-${book.title}`} book={book} />
         ))
     }, [books, handleItemChecked])
 
@@ -51,7 +51,7 @@ const Booklist = () => {
         <Header currentCount={retrievedCount} selectedCount={countSelected} reset={resetAllSelected} />
        {renderError ||
        <>
-        <div ref={bookListRef} style={{height: '500px', overflow: 'scroll'}} onScroll={handleScroll}>
+        <div data-testid="book-list-scroll" ref={bookListRef} style={{height: '500px', overflow: 'scroll'}} onScroll={handleScroll}>
             {renderBookItems}
         </div>
         {renderLoading}
