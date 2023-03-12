@@ -7,12 +7,12 @@ export const useBooksList = () => {
     const [next, setNext] = useState(null);
     const [prev, setPrev] = useState(null);
     const [count, setCount] = useState(0);
+    const endpoint = process.env.REACT_APP_BOOK_ENDPOINT; 
 
-    const listBooks = useCallback(async (goPrev, goNext) => {
-        const endpoint = process.env.REACT_APP_BOOK_ENDPOINT; // add logic for next/previous else default
+    const listBooks = useCallback(async (scrollEndpoint = endpoint) => {
         setLoading(true);
         try {
-            const response = await fetch(endpoint);
+            const response = await fetch(scrollEndpoint);
             // handle not 200
             if(!response.ok) {
                 setError(`Response failed ${response.status}`)
@@ -22,6 +22,7 @@ export const useBooksList = () => {
                 setCount(data.count);
                 setPrev(data?.previous);
                 setNext(data?.next);
+                setError(null);
             }
 
         } catch(e) {
@@ -32,6 +33,6 @@ export const useBooksList = () => {
     } , [])
 
     return {
-        books, loading, error, count, listBooks, 
+        books, loading, error, count, next, prev, listBooks, 
     }
 }

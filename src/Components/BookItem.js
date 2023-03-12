@@ -8,7 +8,7 @@ const BookItem = ({book}) => {
             <div style={{ display: 'flex', flexDirection:'column'}}>
                 <div>{book.title}</div>
                 { book?.authors?.map((author) => (
-                     <div>{author.name}</div>
+                     <div key={`${author.name}-${book.title}`}>{author.name}</div>
                 ))}
          
             </div>
