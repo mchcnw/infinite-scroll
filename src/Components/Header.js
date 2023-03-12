@@ -1,15 +1,19 @@
 import React from 'react'
 
-const Header = ({currentCount, selectedCount, reset}) => {
+const borderBottomStyle = { borderBottom: '1px solid #555555' };
+const itemContainerStyle = { display: 'flex', gap: '3rem', justifyContent: 'space-between', padding: '0 0.5rem' };
+const countsStyle = { display: 'flex', gap: '0.5rem', fontWeight: '600' }
+
+const Header = ({ currentCount, selectedCount, reset }) => {
     return (
         <div>
-   <h1 style={{borderBottom: '1px solid #555555'}}>Books</h1>
-   <div style={{display: 'flex', gap: '3rem', justifyContent: 'space-between', padding: '0 0.5rem'}}>
-    <div style={{display: 'flex', gap: '0.5rem',  fontWeight:'600'}}><span>{currentCount} books</span><span>{`(${selectedCount} selected)`}</span></div>
-     <div style={{alignItems: 'flex-end'}}><button onClick={reset}>Clear selection</button></div>
-   </div>
+            <h1 style={borderBottomStyle}>Books</h1>
+            <div style={itemContainerStyle}>
+                <div style={countsStyle}><span>{currentCount} books</span><span>{`(${selectedCount} selected)`}</span></div>
+                <div><button onClick={reset}>Clear selection</button></div>
+            </div>
         </div>
-     
+
     )
 }
 

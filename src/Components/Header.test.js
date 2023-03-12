@@ -1,5 +1,5 @@
 import Header from './Header'
-import { render, fireEvent} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 describe('<Header />', () => {
     it('should render', () => {
@@ -19,13 +19,13 @@ describe('<Header />', () => {
 
     it('should render clear selection button', () => {
         const { getByRole } = render(<Header />);
-        expect(getByRole('button', {name: /Clear selection/})).toBeInTheDocument()
+        expect(getByRole('button', { name: /Clear selection/ })).toBeInTheDocument()
     })
 
     it('should call reset onclick of clear selection button', () => {
         const resetSpy = jest.fn()
         const { getByRole } = render(<Header reset={resetSpy} />);
-        const resetBtn = getByRole('button', {name: /Clear selection/});
+        const resetBtn = getByRole('button', { name: /Clear selection/ });
         fireEvent.click(resetBtn)
         expect(resetSpy).toHaveBeenCalled()
     })

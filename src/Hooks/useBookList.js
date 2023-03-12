@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useState , useCallback} from "react"
+import { useState, useCallback } from "react"
 
 export const useBooksList = () => {
     const [books, setBooks] = useState([]);
@@ -9,7 +9,7 @@ export const useBooksList = () => {
     const [prev, setPrev] = useState(null);
     const [count, setCount] = useState(0);
     const [retrievedCount, setRetrievedCount] = useState(0)
-    const endpoint = process.env.REACT_APP_BOOK_ENDPOINT; 
+    const endpoint = process.env.REACT_APP_BOOK_ENDPOINT;
 
     useEffect(() => {
         setRetrievedCount(books.length);
@@ -20,7 +20,7 @@ export const useBooksList = () => {
         try {
             const response = await fetch(scrollEndpoint);
             // handle not 200
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(`Response failed ${response.status}`)
             } else {
                 const data = await response.json();
@@ -31,14 +31,14 @@ export const useBooksList = () => {
                 setError(null);
             }
 
-        } catch(e) {
+        } catch (e) {
             setError(e);
         } finally {
             setLoading(false)
         }
-    } , [])
+    }, [])
 
     return {
-        books, loading, error, count, next, prev, retrievedCount, listBooks, 
+        books, loading, error, count, next, prev, retrievedCount, listBooks,
     }
 }
