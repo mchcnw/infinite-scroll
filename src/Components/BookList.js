@@ -1,12 +1,18 @@
 import React from 'react';
+import { useEffect } from 'react';
 import BookItem from './BookItem';
 
-const Booklist = () => {
+const Booklist = ({books = [], scroll}) => {
+
+    useEffect(() => {
+        scroll();
+    }, [scroll])
+
     const renderBookItems = () => {
-        return [...Array(32)].map(() => (
-            <BookItem />
+        return books?.map((book) => (
+            <BookItem key={book.id} book={book} />
         ))
-    }
+    } 
     return (
         <div style={{height: '500px'}}>
             {renderBookItems()}
