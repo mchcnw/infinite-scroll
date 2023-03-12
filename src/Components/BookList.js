@@ -1,13 +1,16 @@
-import React,{ useEffect, useMemo, useRef } from 'react';
+import React,{ useEffect, useMemo, useRef, useCallback } from 'react';
 import BookItem from './BookItem';
+import Header from './Header'
 import { useBooksList } from '../Hooks/useBookList';
+import { useState } from 'react';
 
 const Booklist = () => {
-    const {books, loading, error, next,listBooks} = useBooksList();
+    const {books, loading, error, next,retrievedCount, listBooks} = useBooksList();
+    const [countSelected, setCountSelected] = useState(0)
     const bookListRef = useRef();
     const handleScroll = () => {
-        const isAtBottom = bookListRef?.current?.scrollHeight - bookListRef?.current?.scrollTop === bookListRef?.current?.clientHeight;
-        if(isAtBottom) {
+        const isAtBottom = Math.abs(bookListRef?.current.scrollHeight - bookListRef?.current.clientHeight - bookListRef?.current.scrollTop) < 1;
+        if(isAtBottom)  {
             listBooks(next);
         } 
     }
@@ -16,11 +19,20 @@ const Booklist = () => {
         listBooks();
     }, [listBooks])
 
+
+    const handleItemChecked = useCallback((e) => {
+        setCountSelected((prev) => e.target.checked ? prev + 1 : prev -1)
+    }, [setCountSelected]);
+
+    const resetAllSelected = useCallback(() => {
+        setCountSelected(0)
+    }, [setCountSelected])
+
     const renderBookItems = useMemo(() => {
         return books?.map((book) => (
-            <BookItem key={book.id} book={book} />
+            <BookItem onItemSelected={handleItemChecked} key={book.id} book={book} />
         ))
-    }, [books])
+    }, [books, handleItemChecked])
 
     const renderError = useMemo(() => {
         return error && (
@@ -35,14 +47,19 @@ const Booklist = () => {
     }, [loading]);
 
     return (
-       renderError ||
+        <>
+        <Header currentCount={retrievedCount} selectedCount={countSelected} reset={resetAllSelected} />
+       {renderError ||
        <>
         <div ref={bookListRef} style={{height: '500px', overflow: 'scroll'}} onScroll={handleScroll}>
             {renderBookItems}
         </div>
         {renderLoading}
         </>
+        }
+        </>
     )
+ 
     }
 
 export default Booklist;

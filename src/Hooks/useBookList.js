@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState , useCallback} from "react"
 
 export const useBooksList = () => {
@@ -7,7 +8,12 @@ export const useBooksList = () => {
     const [next, setNext] = useState(null);
     const [prev, setPrev] = useState(null);
     const [count, setCount] = useState(0);
+    const [retrievedCount, setRetrievedCount] = useState(0)
     const endpoint = process.env.REACT_APP_BOOK_ENDPOINT; 
+
+    useEffect(() => {
+        setRetrievedCount(books.length);
+    }, [books])
 
     const listBooks = useCallback(async (scrollEndpoint = endpoint) => {
         setLoading(true);
@@ -33,6 +39,6 @@ export const useBooksList = () => {
     } , [])
 
     return {
-        books, loading, error, count, next, prev, listBooks, 
+        books, loading, error, count, next, prev, retrievedCount, listBooks, 
     }
 }
