@@ -1,5 +1,5 @@
 import { useBooksList } from './useBookList';
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 global.fetch = jest.fn(() =>
     Promise.resolve({
@@ -13,8 +13,7 @@ beforeEach(() => {
 })
 
 describe('useBookList', () => {
-    //  (0 , _react.renderHook) is not a function ???
-    it.skip('should handle error', async () => {
+    it('should handle error', async () => {
         fetch.mockImplementationOnce(() => Promise.reject("API is down"));
         const { result } = renderHook(() => useBooksList())
         await act(async () => { result.current.listBooks() });
@@ -22,7 +21,7 @@ describe('useBookList', () => {
 
     });
 
-    it.skip('should return books', async () => {
+    it('should return books', async () => {
         fetch.mockImplementationOnce(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({ results: [{ title: 'title 1' }] }),
@@ -30,6 +29,17 @@ describe('useBookList', () => {
         const { result } = renderHook(() => useBooksList())
         await act(async () => { result.current.listBooks() });
         expect(result.current.books[0].title).toEqual('title 1')
+    });
+
+
+    it('should return error if response not OK', async () => {
+        fetch.mockImplementationOnce(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({ results: [{ title: 'title 1' }] }),
+        }));
+        const { result } = renderHook(() => useBooksList())
+        await act(async () => { result.current.listBooks() });
+        expect(result.current.error).toBeTruthy()
     });
 
 });
